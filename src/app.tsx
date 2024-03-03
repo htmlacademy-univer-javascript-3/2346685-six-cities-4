@@ -1,11 +1,11 @@
-import MainPage from "./pages/main"
-import type { MainParams } from "./pages/main";
+import MainPage from './pages/main';
+import type { MainParams } from './pages/main';
 
 
 function App({ placesCount }: MainParams): JSX.Element {
-    return (
-        <MainPage placesCount={placesCount} />
-    )
+  return (
+    <MainPage placesCount={placesCount} />
+  );
 }
 
 export default App;
