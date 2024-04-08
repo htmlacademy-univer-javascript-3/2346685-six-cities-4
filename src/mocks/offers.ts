@@ -1,6 +1,6 @@
-import { Offer } from '../constant/types';
+import { OfferType } from '../constant/types';
 
-export const offers: Offer[] = [
+export const offers: OfferType[] = [
   {
     id: 34218,
     type: 'apartment',

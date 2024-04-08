@@ -1,10 +1,10 @@
-import OfferList from '../components/cards/regular/cardList';
-import { Offer } from '../constant/types';
-import Map from '../components/map';
+import OfferList from '../components/cards/regular/offerList';
+import { OfferType } from '../constant/types';
+import MapComponent from '../components/map';
 import { useState } from 'react';
 
 export type MainPageProps = {
-  offers: Offer[];
+  offers: OfferType[];
 };
 
 function MainPage({ offers }: MainPageProps): JSX.Element {
@@ -100,11 +100,11 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offers={offers} setActiveCard={setActiveCard}/>
+                <OfferList offers={offers} isMainScreen setActiveCard={setActiveCard}/>
               </div>
             </section>
             <div className="cities__right-section">
-              <Map offers={offers} activeOfferId={activeCardId}/>
+              <MapComponent offers={offers} isMainScreen activeOfferId={activeCardId}/>
             </div>
           </div>
         </div>

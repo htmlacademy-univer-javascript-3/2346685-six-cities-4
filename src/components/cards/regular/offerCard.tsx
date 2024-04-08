@@ -1,27 +1,31 @@
-import { Offer } from '../../../constant/types';
+import { OfferType } from '../../../constant/types';
 import { imageFolder } from '../../../constant/consts';
 import { Link } from 'react-router-dom';
 import { getStarsFromRating } from '../../../constant/utils';
 
 export type OfferCardParams = {
-  offer: Offer;
+  offer: OfferType;
   onMouseOver: (id: number) => void;
+  isMainScreen: boolean;
 }
 
-export default function OfferCard({ offer, onMouseOver }: OfferCardParams): JSX.Element {
+export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCardParams): JSX.Element {
   return (
-    <article className="cities__card place-card" onMouseOver={() => {
-      onMouseOver(offer.id);
-    }}
+    <article className={isMainScreen ? 'cities__card place-card' : 'near-places__card place-card'}
+      id={offer.id.toString()}
+      onMouseOver={(evt) => {
+        const target = evt.currentTarget as HTMLElement;
+        onMouseOver(+target.id);
+      }}
     >
       {
-        offer.isPremium ? (
+        (offer.isPremium && isMainScreen) ? (
           <div className="place-card__mark">
             <span>Premium</span>
           </div>
         ) : ('')
       }
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={isMainScreen ? 'near-places__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'}>
         <Link to={`/offer/${offer.id}`} state={offer}>
           <img className="place-card__image" src={imageFolder + offer.preview} width="260" height="200" alt="Place image" />
         </Link>

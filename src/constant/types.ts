@@ -1,45 +1,45 @@
-export type Location = {
+export type LocationType = {
     latitude: number;
     longitude: number;
     zoom: number;
 }
 
-export type City = {
+export type CityType = {
     id: number;
     name: string;
-    location: Location;
+    location: LocationType;
 }
 
-export type User = {
+export type UserType = {
     id: string;
     name: string;
     avatar: string;
     isPro: boolean;
 }
 
-export type Offer = {
+export type OfferType = {
     id: number;
     type: string;
     name: string;
     description: string;
     price: number;
-    city: City;
-    location: Location;
+    city: CityType;
+    location: LocationType;
     rating: number;
     isPremium: boolean;
     preview: string;
     isFavorite: boolean;
 
-    owner: User;
+    owner: UserType;
     photos: string[];
     amenities: string[];
     maxAdults: number;
     bedrooms: number;
 }
 
-export type Review = {
+export type ReviewType = {
     id: number;
-    user: User;
+    user: UserType;
     offerId: number;
     date: string;
     comment: string;
