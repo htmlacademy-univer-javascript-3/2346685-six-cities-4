@@ -1,5 +1,4 @@
 import { Offer } from '../../../constant/types';
-import { useState } from 'react';
 import OfferCard from './offerCard';
 
 type OfferListProps = {
