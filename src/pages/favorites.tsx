@@ -1,5 +1,6 @@
 import FavoritesList from '../components/cards/favorite/favoriteList';
 import { Offer } from '../constant/types';
+import { uniqueBy } from '../constant/utils';
 
 type FavoritesProps = {
   offers: Offer[];
@@ -45,16 +46,16 @@ function FavoritesPage({ offers }: FavoritesProps): JSX.Element {
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
               {
-                favorites.map((city) => (
-                  <li className="favorites__locations-items" key={city.location.id}>
+                uniqueBy<Offer, number>(favorites, (item: Offer) => item.city.id).map(({ city }) => (
+                  <li className="favorites__locations-items" key={city.id}>
                     <div className="favorites__locations locations locations--current">
                       <div className="locations__item">
                         <a className="locations__item-link" href="/">
-                          <span>{city.location.name}</span>
+                          <span>{city.name}</span>
                         </a>
                       </div>
                     </div>
-                    <FavoritesList offers={offers.filter((offer) => (offer.location.id === city.location.id))} />
+                    <FavoritesList offers={offers.filter((offer) => (offer.city.id === city.id))} />
                   </li>
                 ))
               }
