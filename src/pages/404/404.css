@@ -21,7 +21,7 @@
     text-size-adjust: 100%;
     background: #0000cd;
     color: #fff;
-    font-size: 16px;
+    font-size: 18px;
 
     width: 100%;
     height: 100vh;
@@ -53,5 +53,6 @@
 .page404 .title {
     background: #ccc;
     color: #0000cd;
-    padding: 2px 6px
+    padding: 2px 6px;
+    font-size: 24px;
 }

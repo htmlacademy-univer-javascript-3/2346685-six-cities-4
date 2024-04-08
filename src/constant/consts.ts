@@ -10,3 +10,5 @@ export enum AuthStatus {
     NoAuth = 'NO_AUTH',
     Unknown = 'UNKNOWN'
 }
+
+export const imageFolder: string = '/markup/img/';

@@ -1,7 +1,7 @@
 import './404.css';
 
 import { useNavigate } from 'react-router-dom';
-import { PageRoutes } from '../../consts';
+import { PageRoutes } from '../../constant/consts';
 import { useCallback, useEffect } from 'react';
 
 
