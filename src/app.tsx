@@ -1,30 +1,35 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 
-import { AuthStatus, PageRoutes } from './consts';
+import { AuthStatus, PageRoutes } from './constant/consts';
 
-import type { MainParams } from './pages/main';
-import MainPage from './pages/main';
 import FavoritesPage from './pages/favorites';
 import LoginPage from './pages/login';
 import OfferPage from './pages/offer';
 import NotFoundPage from './pages/404/404';
 import PrivateRoute from './components/private-route';
+import MainPage from './pages/main';
+import reviews from './mocks/reviews';
+import { Offer } from './constant/types';
 
-function App({ placesCount }: MainParams): JSX.Element {
+export type AppProps = {
+  offers: Offer[];
+}
+
+function App({ offers }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={PageRoutes.Main}
-          element={<MainPage placesCount={placesCount} />}
+          element={<MainPage offers={offers} />}
         />
         <Route
           path={PageRoutes.Favorites}
           element={
             <PrivateRoute
-              authStatus={AuthStatus.NoAuth}
+              authStatus={AuthStatus.Auth}
             >
-              <FavoritesPage />
+              <FavoritesPage offers={offers}/>
             </PrivateRoute>
           }
         />
@@ -34,7 +39,7 @@ function App({ placesCount }: MainParams): JSX.Element {
         />
         <Route
           path={PageRoutes.Offer}
-          element={<OfferPage />}
+          element={<OfferPage offers={offers} reviews={reviews}/>}
         />
         <Route
           path='*'
