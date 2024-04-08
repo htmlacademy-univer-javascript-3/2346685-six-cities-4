@@ -1,8 +1,13 @@
 export type Location = {
-    id: number;
-    name: string;
     latitude: number;
     longitude: number;
+    zoom: number;
+}
+
+export type City = {
+    id: number;
+    name: string;
+    location: Location;
 }
 
 export type User = {
@@ -18,6 +23,7 @@ export type Offer = {
     name: string;
     description: string;
     price: number;
+    city: City;
     location: Location;
     rating: number;
     isPremium: boolean;

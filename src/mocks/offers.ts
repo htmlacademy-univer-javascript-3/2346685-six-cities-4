@@ -8,10 +8,18 @@ export const offers: Offer[] = [
     description: 'Stylish, fully furnished apartment with canal view. Prime location. Perfect for urban living',
     price: 100,
     location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 12
+    },
+    city: {
       id: 1,
       name: 'Amsterdam',
-      latitude: 52.3676,
-      longitude: 4.9041
+      location: {
+        latitude: 52.3676,
+        longitude: 4.9041,
+        zoom: 12
+      }
     },
     rating: 4.5,
     isPremium: false,
@@ -37,10 +45,18 @@ export const offers: Offer[] = [
     description: 'Central hotel with vibrant atmosphere, comfy beds, and social spaces. Ideal for budget-conscious travelers',
     price: 25,
     location: {
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
+      zoom: 12
+    },
+    city: {
       id: 1,
       name: 'Amsterdam',
-      latitude: 52.3676,
-      longitude: 4.9041
+      location: {
+        latitude: 52.3676,
+        longitude: 4.9041,
+        zoom: 12
+      }
     },
     rating: 2.5,
     isPremium: false,
@@ -65,10 +81,18 @@ export const offers: Offer[] = [
     description: 'Elegant accommodations, impeccable service, and prime location for exploring London\'s iconic landmarks.',
     price: 200,
     location: {
-      id: 2,
-      name: 'London',
-      latitude: 51.5072,
-      longitude: 0.1276
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+      zoom: 12
+    },
+    city: {
+      id: 1,
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.3676,
+        longitude: 4.9041,
+        zoom: 12
+      }
     },
     rating: 4,
     isPremium: true,
@@ -93,10 +117,18 @@ export const offers: Offer[] = [
     description: 'Cosy apartment in central London. Modern amenities, close to attractions, perfect for urban exploration',
     price: 123,
     location: {
-      id: 2,
-      name: 'London',
-      latitude: 51.5072,
-      longitude: 0.1276
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 12
+    },
+    city: {
+      id: 1,
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.3676,
+        longitude: 4.9041,
+        zoom: 12
+      }
     },
     rating: 3,
     isPremium: false,

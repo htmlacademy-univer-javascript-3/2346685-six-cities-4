@@ -10,7 +10,7 @@ export default function FavoritesList({ offers }: OfferListProps) {
   return (
     <div className="favorites__places">
       {offers.map((offer) =>
-        <FavoriteCard offer={offer} key={offer.id} />)};
+        <FavoriteCard offer={offer} key={offer.id} />)}
     </div>
   );
 }
