@@ -1,5 +1,5 @@
 import OfferList from '../components/cards/regular/cardList';
-import { Offer } from '../mocks/offers';
+import { Offer } from '../constant/types';
 
 export type MainPageProps = {
   offers: Offer[];
