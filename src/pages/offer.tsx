@@ -142,7 +142,7 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
                   {
-                    reviews.map(({ date, rating: rev_rating, user, comment }) => (
+                    reviews.map(({ date, rating: revRating, user, comment }) => (
                       <li className="reviews__item" key={id}>
                         <div className="reviews__user user">
                           <div className="reviews__avatar-wrapper user__avatar-wrapper">
@@ -155,7 +155,7 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
                         <div className="reviews__info">
                           <div className="reviews__rating rating">
                             <div className="reviews__stars rating__stars">
-                              <span style={{ width: getStarsFromRating(rev_rating) }}></span>
+                              <span style={{ width: getStarsFromRating(revRating) }}></span>
                               <span className="visually-hidden">Rating</span>
                             </div>
                           </div>
