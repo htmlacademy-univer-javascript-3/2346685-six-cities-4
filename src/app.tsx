@@ -6,13 +6,13 @@ import FavoritesPage from './pages/favorites';
 import LoginPage from './pages/login';
 import OfferPage from './pages/offer';
 import NotFoundPage from './pages/404/404';
-import PrivateRoute from './components/private-route';
+import PrivateRoute from './components/privateRoute';
 import MainPage from './pages/main';
 import reviews from './mocks/reviews';
-import { Offer } from './constant/types';
+import { OfferType } from './constant/types';
 
 export type AppProps = {
-  offers: Offer[];
+  offers: OfferType[];
 }
 
 function App({ offers }: AppProps): JSX.Element {

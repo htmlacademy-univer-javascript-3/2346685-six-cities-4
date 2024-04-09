@@ -1,9 +1,9 @@
 import FavoritesList from '../components/cards/favorite/favoriteList';
-import { Offer } from '../constant/types';
+import { OfferType } from '../constant/types';
 import { uniqueBy } from '../constant/utils';
 
 type FavoritesProps = {
-  offers: Offer[];
+  offers: OfferType[];
 }
 
 function FavoritesPage({ offers }: FavoritesProps): JSX.Element {
@@ -46,7 +46,7 @@ function FavoritesPage({ offers }: FavoritesProps): JSX.Element {
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
               {
-                uniqueBy<Offer, number>(favorites, (item: Offer) => item.city.id).map(({ city }) => (
+                uniqueBy<OfferType, number>(favorites, (item: OfferType) => item.city.id).map(({ city }) => (
                   <li className="favorites__locations-items" key={city.id}>
                     <div className="favorites__locations locations locations--current">
                       <div className="locations__item">

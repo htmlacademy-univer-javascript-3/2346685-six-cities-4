@@ -1,10 +1,10 @@
-import { Offer } from '../../../constant/types';
+import { OfferType } from '../../../constant/types';
 import { imageFolder } from '../../../constant/consts';
 import { Link } from 'react-router-dom';
 import { getStarsFromRating } from '../../../constant/utils';
 
 export type FavoriteCardParams = {
-  offer: Offer;
+  offer: OfferType;
 }
 
 export default function FavoriteCard({ offer }: FavoriteCardParams): JSX.Element {

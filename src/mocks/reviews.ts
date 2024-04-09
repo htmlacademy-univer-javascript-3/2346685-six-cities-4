@@ -1,7 +1,7 @@
-import { Review } from '../constant/types';
+import { ReviewType } from '../constant/types';
 
 // Mock data for reviews
-const reviews: Review[] = [
+const reviews: ReviewType[] = [
   {
     id: 1,
     user: {

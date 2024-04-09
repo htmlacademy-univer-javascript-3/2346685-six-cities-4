@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { Icon, Marker } from 'leaflet';
 import useMap from '../hooks/useMap';
-import { Offer } from '../constant/types';
+import { OfferType } from '../constant/types';
 import 'leaflet/dist/leaflet.css';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../constant/consts';
 
@@ -18,17 +18,18 @@ const currentCustomIcon = new Icon({
 });
 
 type MapProps = {
-  offers: Offer[];
+  offers: OfferType[];
   activeOfferId: number;
+  isMainScreen: boolean;
 }
 
-export default function Map({ offers, activeOfferId }: MapProps): JSX.Element {
+export default function MapComponent({ offers, activeOfferId, isMainScreen }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, offers[0]);
 
   useEffect(() => {
     if (map) {
-      offers.forEach((offer: Offer) => {
+      offers.forEach((offer: OfferType) => {
         const marker = new Marker({
           lat: offer.location.latitude,
           lng: offer.location.longitude,
@@ -45,6 +46,6 @@ export default function Map({ offers, activeOfferId }: MapProps): JSX.Element {
   }, [map, offers, activeOfferId]);
 
   return (
-    <section className="cities__map map" ref={mapRef}></section>
+    <section className={isMainScreen ? 'cities__map map' : 'offer__map map'} ref={mapRef}></section>
   );
 }
