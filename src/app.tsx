@@ -1,4 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { useAppSelector } from './hooks';
 
 import { AuthStatus, PageRoutes } from './constant/consts';
 
@@ -9,13 +10,10 @@ import NotFoundPage from './pages/404/404';
 import PrivateRoute from './components/privateRoute';
 import MainPage from './pages/main';
 import reviews from './mocks/reviews';
-import { OfferType } from './constant/types';
 
-export type AppProps = {
-  offers: OfferType[];
-}
+function App(): JSX.Element {
+  const offers = useAppSelector((state)=>state.offers);
 
-function App({ offers }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>

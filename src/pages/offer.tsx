@@ -8,6 +8,7 @@ import { useState } from 'react';
 import ReviewsList from '../components/reviewList';
 import OfferList from '../components/cards/regular/offerList';
 import MapComponent from '../components/map';
+import { useAppSelector } from '../hooks';
 
 type OfferPageProps = {
   offers: OfferType[];
@@ -20,8 +21,9 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
 
   const [{ type, name, description, price, rating, isPremium, isFavorite, owner, photos,
     amenities, maxAdults, bedrooms }] = offers.filter((offer) => offer.id === id);
-
   const [activeCard, setActiveCard] = useState(0);
+
+  const selectedCity = useAppSelector((state)=>state.selectedCity);
 
   return (
     <div className="page">
@@ -151,7 +153,7 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
               </section>
             </div>
           </div>
-          <MapComponent isMainScreen={false} offers={offers.slice(0,3)} activeOfferId={activeCard}/>
+          <MapComponent isMainScreen={false} offers={offers.slice(0, 3)} activeOfferId={activeCard} selectedCity={selectedCity} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -159,7 +161,7 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
               Other places in the neighborhood
             </h2>
             <div className="near-places__list places__list">
-              <OfferList offers={offers.slice(0, 3)} setActiveCard={setActiveCard} isMainScreen={false}/>
+              <OfferList offers={offers.slice(0, 3)} setActiveCard={setActiveCard} isMainScreen={false} />
             </div>
           </section>
         </div>

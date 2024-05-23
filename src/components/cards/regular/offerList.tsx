@@ -11,7 +11,7 @@ export default function OfferList({ offers, setActiveCard, isMainScreen }: Offer
   return (
     <div className="cities__places-list places__list tabs__content">
       {offers.map((offer) =>
-        <OfferCard onMouseOver={setActiveCard} offer={offer} isMainScreen={isMainScreen} key={offer.id} />)};
+        <OfferCard onMouseOver={setActiveCard} offer={offer} isMainScreen={isMainScreen} key={offer.id} />)}
     </div>
   );
 }

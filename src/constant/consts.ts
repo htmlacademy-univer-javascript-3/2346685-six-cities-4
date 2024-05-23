@@ -11,6 +11,20 @@ export enum AuthStatus {
     Unknown = 'UNKNOWN'
 }
 
+export enum CityString {
+    AMSTERDAM = 'Amsterdam',
+    COLOGNE = 'Cologne',
+    PARIS = 'Paris',
+    DUSSELDORF = 'Dusseldorf',
+    BRUSSELS = 'Brussels',
+    HAMBURG = 'Hamburg',
+}
+
+export enum Actions {
+    FILTER_CITIES = 'FILTER_CITIES',
+    FILTER_OFFERS = 'FILTER_OFFERS',
+}
+
 export const URL_MARKER_DEFAULT =
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
 
