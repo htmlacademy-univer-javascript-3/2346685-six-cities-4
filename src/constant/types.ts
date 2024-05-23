@@ -1,3 +1,5 @@
+import { store } from '../store';
+
 export type LocationType = {
     latitude: number;
     longitude: number;
@@ -45,3 +47,6 @@ export type ReviewType = {
     comment: string;
     rating: number;
 }
+
+export type State = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
