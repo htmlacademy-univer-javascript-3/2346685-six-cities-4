@@ -25,6 +25,13 @@ export enum Actions {
     FILTER_OFFERS = 'FILTER_OFFERS',
 }
 
+export enum SortBy {
+    Popular = 'Popular',
+    PriceAsc = 'Price: low to high',
+    PriceDesc = 'Price: high to low',
+    TopRated = 'Top rated first'
+}
+
 export const URL_MARKER_DEFAULT =
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
 
