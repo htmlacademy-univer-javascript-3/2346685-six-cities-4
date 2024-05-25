@@ -1,5 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { useAppSelector } from './hooks';
+import { useAppDispatch, useAppSelector } from './hooks';
 
 import { AuthStatus, PageRoutes } from './constant/consts';
 
@@ -9,10 +9,28 @@ import OfferPage from './pages/offer';
 import NotFoundPage from './pages/404/404';
 import PrivateRoute from './components/privateRoute';
 import MainPage from './pages/main';
-import reviews from './mocks/reviews';
+import LoadingPage from './pages/loading/loading';
+import { fetchFavoriteOffersAction } from './store/api-actions';
+import { useEffect } from 'react';
 
 function App(): JSX.Element {
-  const offers = useAppSelector((state)=>state.offers);
+  const dispatch = useAppDispatch();
+
+  const offers = useAppSelector((state) => state.filteredOffers);
+  const Auth = useAppSelector((state) => state.Auth);
+  const loadingStatus = useAppSelector((state) => state.loadingStatus);
+
+  useEffect(() => {
+    if (Auth === AuthStatus.Auth) {
+      dispatch(fetchFavoriteOffersAction());
+    }
+  }, [Auth, dispatch]);
+
+  if (loadingStatus || Auth === AuthStatus.Unknown) {
+    return (
+      <LoadingPage />
+    );
+  }
 
   return (
     <BrowserRouter>
@@ -25,9 +43,9 @@ function App(): JSX.Element {
           path={PageRoutes.Favorites}
           element={
             <PrivateRoute
-              authStatus={AuthStatus.Auth}
+              authStatus={Auth}
             >
-              <FavoritesPage offers={offers}/>
+              <FavoritesPage offers={offers} />
             </PrivateRoute>
           }
         />
@@ -37,7 +55,7 @@ function App(): JSX.Element {
         />
         <Route
           path={PageRoutes.Offer}
-          element={<OfferPage offers={offers} reviews={reviews}/>}
+          element={<OfferPage />}
         />
         <Route
           path='*'

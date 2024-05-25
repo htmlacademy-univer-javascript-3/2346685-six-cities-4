@@ -1,21 +1,24 @@
 import { OfferType } from '../../../constant/types';
-import { imageFolder } from '../../../constant/consts';
 import { Link } from 'react-router-dom';
 import { getStarsFromRating } from '../../../constant/utils';
+import { useAppDispatch } from '../../../hooks';
+import { fetchOfferByIDAction } from '../../../store/api-actions';
 
 export type OfferCardParams = {
   offer: OfferType;
-  onMouseOver: (id: number) => void;
+  onMouseOver: (id: string) => void;
   isMainScreen: boolean;
 }
 
 export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCardParams): JSX.Element {
+  const dispatch = useAppDispatch();
+
   return (
     <article className={isMainScreen ? 'cities__card place-card' : 'near-places__card place-card'}
       id={offer.id.toString()}
       onMouseOver={(evt) => {
         const target = evt.currentTarget as HTMLElement;
-        onMouseOver(+target.id);
+        onMouseOver(target.id);
       }}
     >
       {
@@ -26,8 +29,11 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
         ) : ('')
       }
       <div className={isMainScreen ? 'near-places__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'}>
-        <Link to={`/offer/${offer.id}`} state={offer}>
-          <img className="place-card__image" src={imageFolder + offer.preview} width="260" height="200" alt="Place image" />
+        <Link to={`/offer/${offer.id}`} state={offer} onClick={() => {
+          dispatch(fetchOfferByIDAction({id :offer.id}));
+        }}
+        >
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -50,7 +56,7 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${offer.id}`} state={offer}>{offer.name}</Link>
+          <Link to={`/offer/${offer.id}`} state={offer}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

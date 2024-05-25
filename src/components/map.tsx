@@ -19,7 +19,7 @@ const currentCustomIcon = new Icon({
 
 type MapProps = {
   offers: OfferType[];
-  activeOfferId: number;
+  activeOfferId: string;
   isMainScreen: boolean;
   selectedCity: CityType;
 }

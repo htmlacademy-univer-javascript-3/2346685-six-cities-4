@@ -12,7 +12,7 @@ export const cities: CityMock = {
     location: {
       latitude: 52.3676,
       longitude: 4.9041,
-      zoom: 11
+      zoom: 12
     }
   },
   [CityString.COLOGNE]: {
@@ -21,7 +21,7 @@ export const cities: CityMock = {
     location: {
       latitude: 50.9375,
       longitude: 6.9603,
-      zoom: 11
+      zoom: 12
     }
   },
   [CityString.PARIS]: {
@@ -30,7 +30,7 @@ export const cities: CityMock = {
     location: {
       latitude: 48.8575,
       longitude: 2.3514,
-      zoom: 11
+      zoom: 12
     }
   },
   [CityString.DUSSELDORF]: {
@@ -39,16 +39,16 @@ export const cities: CityMock = {
     location: {
       latitude: 51.2230,
       longitude: 6.7825,
-      zoom: 11
+      zoom: 12
     }
   },
   [CityString.BRUSSELS]: {
     id: 5,
-    name: 'Brusself',
+    name: 'Brussels',
     location: {
       latitude: 50.8476,
       longitude: 4.3572,
-      zoom: 11
+      zoom: 12
     }
   },
   [CityString.HAMBURG]: {
@@ -57,7 +57,7 @@ export const cities: CityMock = {
     location: {
       latitude: 53.5488,
       longitude: 9.9872,
-      zoom: 11
+      zoom: 12
     }
   }
 };

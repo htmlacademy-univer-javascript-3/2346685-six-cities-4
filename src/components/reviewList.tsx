@@ -5,7 +5,7 @@ type ReviewListProps = {
     reviews: ReviewType[];
 }
 
-export default function ReviewsList({ reviews }: ReviewListProps) {
+export default function ReviewsList({ reviews }: ReviewListProps): JSX.Element {
   return (
     <ul className="reviews__list">
       {reviews.map((review) => (

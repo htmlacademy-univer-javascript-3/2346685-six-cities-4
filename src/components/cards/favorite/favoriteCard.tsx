@@ -1,5 +1,4 @@
 import { OfferType } from '../../../constant/types';
-import { imageFolder } from '../../../constant/consts';
 import { Link } from 'react-router-dom';
 import { getStarsFromRating } from '../../../constant/utils';
 
@@ -12,7 +11,7 @@ export default function FavoriteCard({ offer }: FavoriteCardParams): JSX.Element
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${offer.id}`} state={offer}>
-          <img className="place-card__image" src={imageFolder + offer.preview} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="favorites__card-info place-card__info">
@@ -35,7 +34,7 @@ export default function FavoriteCard({ offer }: FavoriteCardParams): JSX.Element
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${offer.id}`} state={offer}>{offer.name}</Link>
+          <Link to={`/offer/${offer.id}`} state={offer}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

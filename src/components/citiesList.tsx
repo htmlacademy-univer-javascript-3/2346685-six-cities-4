@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 import { CityString } from '../constant/consts';
 import { useAppDispatch } from '../hooks';
-import { filterOffers, filterCities } from '../constant/actions';
+import { filterOffers, filterCities } from '../store/actions.ts';
 import { CityType } from '../constant/types';
 
 type CitiesListProps = {
   selectedCity: CityType | null;
 }
-
 
 export default function CitiesList({ selectedCity }: CitiesListProps): JSX.Element {
   const dispatch = useAppDispatch();
