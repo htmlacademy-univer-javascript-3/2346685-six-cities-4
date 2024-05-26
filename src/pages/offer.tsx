@@ -1,13 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import ReviewForm from '../components/reviewForm';
+import ReviewForm from '../components/review-form';
 import { getStarsFromRating } from '../constant/utils';
 import { useEffect, useState } from 'react';
-import ReviewsList from '../components/reviewList';
-import OfferList from '../components/cards/regular/offerList';
+import ReviewsList from '../components/review-list';
+import OfferList from '../components/cards/regular/offer-list';
 import MapComponent from '../components/map';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { clearErrorAction, fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../store/api-actions';
-import { PageRoutes } from '../constant/consts';
+import { AuthStatus, PageRoutes } from '../constant/consts';
 import Header from '../components/header';
 import { getNearby, getOfferInfo, getReviews } from '../store/offer-reducers/offer-by-id/selectors';
 import { getError, getLoadingStatus } from '../store/app-reducer/selectors';
@@ -53,7 +53,7 @@ export default function OfferScreen(): JSX.Element {
   }
 
   const handleFavoriteButtonClick = () => {
-    if(authStatus !== 'AUTH') {
+    if(authStatus !== AuthStatus.Auth) {
       return;
     }
     if (id) {
@@ -164,9 +164,9 @@ export default function OfferScreen(): JSX.Element {
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ReviewsList reviews={reviews} />
                 {
-                    authStatus === 'AUTH' &&
+                  authStatus === AuthStatus.Auth &&
                     <ReviewForm id={offerInfo.id} />
-                  }
+                }
               </section>
             </div>
           </div>

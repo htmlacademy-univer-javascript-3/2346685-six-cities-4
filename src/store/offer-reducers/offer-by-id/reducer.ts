@@ -24,6 +24,6 @@ export const OfferByIDSlice = createSlice({
     builder
       .addCase(fetchOfferByIDAction.fulfilled, (state, action: PayloadAction<SelectedOfferType>) => {
         state.selectedOffer = action.payload;
-      })
+      });
   }
 });

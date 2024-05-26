@@ -4,7 +4,8 @@ import { getStarsFromRating } from '../../../constant/utils';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../../../store/api-actions';
 import { getAuthStatus } from '../../../store/user-reducer/selectors';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { AuthStatus } from '../../../constant/consts';
 
 export type OfferCardParams = {
   offer: OfferType;
@@ -19,14 +20,12 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
   const [isFavoriteOffer, setFavoriteOffer] = useState<boolean | null>(offer.isFavorite);
 
   const handleFavoriteButtonClick = () => {
-    if(authStatus !== 'AUTH') {
+    if(authStatus !== AuthStatus.Auth) {
       return;
     }
     dispatch(setOfferFavoriteStatusAction({id: offer.id, favoriteStatus: !isFavoriteOffer}));
     setFavoriteOffer(!isFavoriteOffer);
   };
-
-  useEffect
 
   return (
     <article className={isMainScreen ? 'cities__card place-card' : 'near-places__card place-card'}

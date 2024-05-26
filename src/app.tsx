@@ -7,7 +7,7 @@ import FavoritesPage from './pages/favorites';
 import LoginPage from './pages/login';
 import OfferPage from './pages/offer';
 import NotFoundPage from './pages/404/404';
-import PrivateRoute from './components/privateRoute';
+import PrivateRoute from './components/private-route';
 import MainPage from './pages/main';
 import LoadingPage from './pages/loading/loading';
 import { getFilteredOffers } from './store/offer-reducers/offer/selectors';

@@ -1,5 +1,5 @@
 import { OfferType } from '../../../constant/types';
-import FavoriteCard from './favoriteCard';
+import FavoriteCard from './favorite-card';
 
 export type OfferListProps = {
     offers: OfferType[];

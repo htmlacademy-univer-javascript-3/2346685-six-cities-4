@@ -100,7 +100,7 @@ export const sendOfferCommentAction = createAsyncThunk<ReviewType[], {
   id: string;
   commentData: CommentData;
   resetFormData: () => void;
-},
+    },
   {
     dispatch: AppDispatch;
     state: State;

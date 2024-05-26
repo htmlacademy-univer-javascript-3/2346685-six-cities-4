@@ -1,12 +1,12 @@
 import { OfferType } from '../constant/types';
 import { useState } from 'react';
 import { useAppSelector } from '../hooks';
-import OfferList from '../components/cards/regular/offerList';
+import OfferList from '../components/cards/regular/offer-list';
 import MapComponent from '../components/map';
-import CitiesList from '../components/citiesList';
+import CitiesList from '../components/cities-list';
 import { SortBy } from '../constant/consts';
-import useOffersSort from '../hooks/useOffersSort';
-import SortByForm from '../components/sortingByForm';
+import useOffersSort from '../hooks/use-offers-sort';
+import SortByForm from '../components/sorting-by-form';
 import Header from '../components/header';
 import { getCityData } from '../store/offer-reducers/offer/selectors';
 
