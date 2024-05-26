@@ -8,6 +8,7 @@ import { SortBy } from '../constant/consts';
 import useOffersSort from '../hooks/useOffersSort';
 import SortByForm from '../components/sortingByForm';
 import Header from '../components/header';
+import { getCityData } from '../store/offer-reducers/offer/selectors';
 
 export type MainPageProps = {
   offers: OfferType[];
@@ -15,7 +16,11 @@ export type MainPageProps = {
 
 export default function MainPage({ offers }: MainPageProps): JSX.Element {
   const [activeCardId, setActiveCard] = useState('0');
-  const selectedCity = useAppSelector((state)=>state.selectedCity);
+  const selectedCity = useAppSelector(getCityData);
+
+  if (!selectedCity) {
+    throw new Error('City Data is null');
+  }
 
   const [selectedSort, selectSort] = useState<SortBy>(SortBy.Popular);
   const sortedOffers = useOffersSort(offers, selectedSort);

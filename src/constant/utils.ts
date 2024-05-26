@@ -14,5 +14,5 @@ export function checkPassword(password: string) {
   const hasLetter = /[a-zA-Z]/.test(password);
   const hasNumber = /\d/.test(password);
 
-  return hasLetter && hasNumber;
+  return hasLetter && hasNumber && password.length >= 3;
 }

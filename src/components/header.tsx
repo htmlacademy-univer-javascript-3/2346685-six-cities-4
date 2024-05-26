@@ -1,12 +1,14 @@
 import {Link} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { getUserEmail } from '../services/user-email';
 import { AuthStatus } from '../constant/consts';
 import { logoutAction } from '../store/api-actions';
+import { getAuthStatus} from '../store/user-reducer/selectors';
+import { getFavoriteOffers } from '../store/offer-reducers/offer/selectors';
+import { getUserEmail } from '../services/user-email';
 
 export default function Header(): JSX.Element {
-  const Auth = useAppSelector((state) => state.Auth);
-  const favoriteOffers = useAppSelector((state) => state.favoriteOffers);
+  const Auth = useAppSelector(getAuthStatus);
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
   const dispatch = useAppDispatch();
   const userEmail = getUserEmail();
 

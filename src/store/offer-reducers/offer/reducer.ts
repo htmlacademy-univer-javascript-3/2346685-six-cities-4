@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit/dist/createSlice";
-import { CityType, OfferType } from "../../../constant/types";
-import { CityString } from "../../../constant/consts";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { CityType, OfferType } from '../../../constant/types';
+import { CityString, SliceNames } from '../../../constant/consts';
+import { fetchFavoriteOffersAction, fetchOffersAction } from '../../api-actions';
 
 type OfferState = {
   selectedCity: string;
@@ -19,22 +20,35 @@ const initialState: OfferState = {
   favoriteOffers: [],
 };
 
-export const favoriteOffersData = createSlice({
-  name: 'offer-reducer',
+export const OfferSlice = createSlice({
+  name: SliceNames.OFFER_REDUCER,
   initialState,
   reducers: {
-    setSelectedCity: (state, action) => {
-      state.selectedCity = action.payload;
+    setSelectedCity: (state, action: PayloadAction<string | null>) => {
+      if (action.payload) {
+        state.selectedCity = action.payload;
+      } else {
+        state.selectedCity = INITIAL_CITY;
+      }
     },
-    loadOffers: (state, action) => {
+    loadOffers: (state, action: PayloadAction<OfferType[]>) => {
       state.offers = action.payload;
-      state.cityData = state.offers[0].city;
     },
     filterOffers: (state) => {
-      state.filteredOffers = state.offers.filter((offer) => offer.city.name === state.cityData?.name);
+      state.filteredOffers = state.offers.filter((offer) => offer.city.name === state.selectedCity);
+      state.cityData = state.filteredOffers[0].city;
     },
-    loadFavorites: (state, action) => {
-      state.favoriteOffers = action.payload;
-    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchOffersAction.fulfilled, (state, action: PayloadAction<OfferType[]>) => {
+        OfferSlice.caseReducers.loadOffers(state, action);
+        OfferSlice.caseReducers.filterOffers(state);
+      })
+      .addCase(fetchFavoriteOffersAction.fulfilled, (state, action: PayloadAction<OfferType[]>) => {
+        state.favoriteOffers = action.payload;
+      });
   }
 });
+
+export const {setSelectedCity, loadOffers, filterOffers} = OfferSlice.actions;

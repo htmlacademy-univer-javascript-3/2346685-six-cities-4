@@ -5,8 +5,8 @@ import App from './app';
 import { store } from './store';
 import { checkAuthAction, fetchOffersAction } from './store/api-actions';
 
-store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
+store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

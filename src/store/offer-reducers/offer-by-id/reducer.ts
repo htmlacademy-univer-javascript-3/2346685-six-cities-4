@@ -1,5 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit/dist/createSlice";
-import { SelectedOfferType } from "../../../constant/types";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { SelectedOfferType } from '../../../constant/types';
+import { SliceNames } from '../../../constant/consts';
+import { fetchOfferByIDAction } from '../../api-actions';
 
 type OfferByIDState = {
   selectedOffer: SelectedOfferType;
@@ -13,12 +15,15 @@ const initialState: OfferByIDState = {
   },
 };
 
-export const favoriteOffersData = createSlice({
-  name: 'offer-by-id-reducer',
+export const OfferByIDSlice = createSlice({
+  name: SliceNames.OFFER_BY_ID_REDUCER,
   initialState,
   reducers: {
-    oadOfferByID: (state, { payload }) => {
-      state.selectedOffer = payload;
-    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchOfferByIDAction.fulfilled, (state, action: PayloadAction<SelectedOfferType>) => {
+        state.selectedOffer = action.payload;
+      })
   }
 });

@@ -1,8 +1,10 @@
 import { OfferType } from '../../../constant/types';
 import { Link } from 'react-router-dom';
 import { getStarsFromRating } from '../../../constant/utils';
-import { useAppDispatch } from '../../../hooks';
-import { fetchOfferByIDAction } from '../../../store/api-actions';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../../../store/api-actions';
+import { getAuthStatus } from '../../../store/user-reducer/selectors';
+import { useEffect, useState } from 'react';
 
 export type OfferCardParams = {
   offer: OfferType;
@@ -12,6 +14,19 @@ export type OfferCardParams = {
 
 export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCardParams): JSX.Element {
   const dispatch = useAppDispatch();
+
+  const authStatus = useAppSelector(getAuthStatus);
+  const [isFavoriteOffer, setFavoriteOffer] = useState<boolean | null>(offer.isFavorite);
+
+  const handleFavoriteButtonClick = () => {
+    if(authStatus !== 'AUTH') {
+      return;
+    }
+    dispatch(setOfferFavoriteStatusAction({id: offer.id, favoriteStatus: !isFavoriteOffer}));
+    setFavoriteOffer(!isFavoriteOffer);
+  };
+
+  useEffect
 
   return (
     <article className={isMainScreen ? 'cities__card place-card' : 'near-places__card place-card'}
@@ -42,7 +57,7 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button className={`place-card__bookmark-button ${isFavoriteOffer ? 'place-card__bookmark-button--active' : ''} button`} onClick={handleFavoriteButtonClick} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

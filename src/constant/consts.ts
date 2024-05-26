@@ -11,11 +11,11 @@ export enum PageRoutes {
 }
 
 export enum APIRoutes {
-    Offers = '/offers',
-    Reviews = '/comments',
-    Login = '/login',
-    Logout = '/logout',
-    FavoriteOffers = '/favorite'
+    Offers = '/offers/',
+    Reviews = '/comments/',
+    Login = '/login/',
+    Logout = '/logout/',
+    FavoriteOffers = '/favorite/'
 }
 
 export enum AuthStatus {
@@ -49,6 +49,13 @@ export enum SortBy {
     PriceAsc = 'Price: low to high',
     PriceDesc = 'Price: high to low',
     TopRated = 'Top rated first',
+}
+
+export enum SliceNames {
+    APP_REDUCER = 'app-reducer',
+    OFFER_REDUCER = 'offer-reducer',
+    OFFER_BY_ID_REDUCER = 'offer-by-id-reducer',
+    USER_REDUCER = 'user-reducer',
 }
 
 export const URL_MARKER_DEFAULT =

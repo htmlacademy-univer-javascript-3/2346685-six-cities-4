@@ -6,20 +6,29 @@ import ReviewsList from '../components/reviewList';
 import OfferList from '../components/cards/regular/offerList';
 import MapComponent from '../components/map';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { clearErrorAction, fetchOfferByIDAction } from '../store/api-actions';
-import LoadingPage from './loading/loading';
+import { clearErrorAction, fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../store/api-actions';
 import { PageRoutes } from '../constant/consts';
 import Header from '../components/header';
+import { getNearby, getOfferInfo, getReviews } from '../store/offer-reducers/offer-by-id/selectors';
+import { getError, getLoadingStatus } from '../store/app-reducer/selectors';
+import { getCityData } from '../store/offer-reducers/offer/selectors';
+import { getAuthStatus } from '../store/user-reducer/selectors';
 
 export default function OfferScreen(): JSX.Element {
   const { id } = useParams<{ id: string }>();
 
-  const selectedOffer = useAppSelector((state) => state.selectedOffer);
-  const loadingStatus = useAppSelector((state) => state.loadingStatus);
-  const error = useAppSelector((state) => state.error);
+  const offerInfo = useAppSelector(getOfferInfo);
+  const nearby = useAppSelector(getNearby);
+  const reviews = useAppSelector(getReviews);
+
+  const loadingStatus = useAppSelector(getLoadingStatus);
+  const authStatus = useAppSelector(getAuthStatus);
+  const error = useAppSelector(getError);
 
   const [activeCardID, setActiveCardID] = useState('0');
-  const selectedCity = useAppSelector((state) => state.selectedCity);
+  const [isFavoriteOffer, setFavoriteOffer] = useState<boolean | null>(offerInfo?.isFavorite ? offerInfo.isFavorite : null);
+
+  const cityData = useAppSelector(getCityData);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -30,7 +39,7 @@ export default function OfferScreen(): JSX.Element {
     }
   }, [error, navigate, dispatch]);
 
-  if (loadingStatus || !selectedOffer || !selectedOffer.offerInfo) {
+  if (loadingStatus || !offerInfo || !nearby || !reviews || !cityData) {
     // In case offer is not loaded(for example page was reloaded) dispatch another loader
     if (!loadingStatus) {
       if (id) {
@@ -39,13 +48,23 @@ export default function OfferScreen(): JSX.Element {
     }
 
     return (
-      <LoadingPage />
+      <div></div>
     );
   }
 
-  const { offerInfo, nearby, reviews } = selectedOffer;
+  const handleFavoriteButtonClick = () => {
+    if(authStatus !== 'AUTH') {
+      return;
+    }
+    if (id) {
+      // I use isFavoriteOffer !== true instead of !isFavoriteOffer to account for null value, in which
+      // case this expression should evaluate to 1
+      dispatch(setOfferFavoriteStatusAction({id, favoriteStatus: isFavoriteOffer !== true}));
+    }
+    setFavoriteOffer(!isFavoriteOffer);
+  };
 
-  const { type, title, description, price, rating, isPremium, isFavorite, host, images,
+  const { type, title, description, price, rating, isPremium, host, images,
     goods: amenities, maxAdults, bedrooms } = offerInfo;
 
   return (
@@ -79,7 +98,7 @@ export default function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{title}</h1>
-                <button className={`offer__bookmark-button button ${isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button">
+                <button className={`offer__bookmark-button button ${isFavoriteOffer ? 'offer__bookmark-button--active' : ''}`} onClick={handleFavoriteButtonClick} type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -142,13 +161,16 @@ export default function OfferScreen(): JSX.Element {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews?.length}</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ReviewsList reviews={reviews} />
-                <ReviewForm />
+                {
+                    authStatus === 'AUTH' &&
+                    <ReviewForm id={offerInfo.id} />
+                  }
               </section>
             </div>
           </div>
-          <MapComponent isMainScreen={false} offers={nearby.slice(0, 3)} activeOfferId={activeCardID} selectedCity={selectedCity} />
+          <MapComponent isMainScreen={false} offers={nearby.slice(0, 3)} activeOfferId={activeCardID} selectedCity={cityData} />
         </section>
         <div className="container">
           <section className="near-places places">

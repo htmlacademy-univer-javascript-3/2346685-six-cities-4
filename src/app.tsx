@@ -10,21 +10,24 @@ import NotFoundPage from './pages/404/404';
 import PrivateRoute from './components/privateRoute';
 import MainPage from './pages/main';
 import LoadingPage from './pages/loading/loading';
+import { getFilteredOffers } from './store/offer-reducers/offer/selectors';
+import { getAuthStatus } from './store/user-reducer/selectors';
+import { getLoadingStatus } from './store/app-reducer/selectors';
 import { fetchFavoriteOffersAction } from './store/api-actions';
 import { useEffect } from 'react';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const offers = useAppSelector((state) => state.filteredOffers);
-  const Auth = useAppSelector((state) => state.Auth);
-  const loadingStatus = useAppSelector((state) => state.loadingStatus);
+  const offers = useAppSelector(getFilteredOffers);
+  const loadingStatus = useAppSelector(getLoadingStatus);
+  const Auth = useAppSelector(getAuthStatus);
 
   useEffect(() => {
     if (Auth === AuthStatus.Auth) {
       dispatch(fetchFavoriteOffersAction());
     }
-  }, [Auth, dispatch]);
+  }, [dispatch, Auth]);
 
   if (loadingStatus || Auth === AuthStatus.Unknown) {
     return (
@@ -45,7 +48,7 @@ function App(): JSX.Element {
             <PrivateRoute
               authStatus={Auth}
             >
-              <FavoritesPage offers={offers} />
+              <FavoritesPage />
             </PrivateRoute>
           }
         />

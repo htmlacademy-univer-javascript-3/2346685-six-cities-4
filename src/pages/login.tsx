@@ -2,10 +2,11 @@ import { FormEvent, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { clearErrorAction, loginAction } from '../store/api-actions';
 import { checkPassword } from '../constant/utils';
-import { setError } from '../store/actions';
+import { getSelectedCity } from '../store/offer-reducers/offer/selectors';
+import { setError } from '../store/app-reducer/reducer';
 
 function LoginPage(): JSX.Element {
-  const selectedCity = useAppSelector((state) => state.selectedCity);
+  const selectedCity = useAppSelector(getSelectedCity);
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -48,7 +49,7 @@ function LoginPage(): JSX.Element {
           <section className="locations locations--login locations--current">
             <div className="locations__item">
               <a className="locations__item-link" href="#">
-                <span>{selectedCity.name}</span>
+                <span>{selectedCity}</span>
               </a>
             </div>
           </section>
