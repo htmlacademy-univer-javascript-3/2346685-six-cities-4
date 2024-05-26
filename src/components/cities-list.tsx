@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 import { CityString } from '../constant/consts';
 import { useAppDispatch } from '../hooks';
-import { filterOffers, filterCities } from '../constant/actions';
 import { CityType } from '../constant/types';
+import { filterOffers, setSelectedCity } from '../store/offer-reducers/offer/reducer';
 
 type CitiesListProps = {
   selectedCity: CityType | null;
 }
-
 
 export default function CitiesList({ selectedCity }: CitiesListProps): JSX.Element {
   const dispatch = useAppDispatch();
@@ -18,7 +17,7 @@ export default function CitiesList({ selectedCity }: CitiesListProps): JSX.Eleme
       if (target.tagName !== 'SPAN') {
         return;
       }
-      dispatch(filterCities(target.textContent));
+      dispatch(setSelectedCity(target.textContent));
       dispatch(filterOffers());
     }}
     >

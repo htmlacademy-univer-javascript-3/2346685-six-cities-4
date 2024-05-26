@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import useMap from '../hooks/useMap';
+import useMap from '../hooks/use-map';
 import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import { CityType, OfferType } from '../constant/types';
@@ -19,7 +19,7 @@ const currentCustomIcon = new Icon({
 
 type MapProps = {
   offers: OfferType[];
-  activeOfferId: number;
+  activeOfferId: string;
   isMainScreen: boolean;
   selectedCity: CityType;
 }

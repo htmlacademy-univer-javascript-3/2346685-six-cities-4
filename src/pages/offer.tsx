@@ -1,70 +1,84 @@
-import { useParams } from 'react-router-dom';
-import { OfferType } from '../constant/types';
-import { ReviewType } from '../constant/types';
-import ReviewForm from '../components/reviewForm';
+import { useNavigate, useParams } from 'react-router-dom';
+import ReviewForm from '../components/review-form';
 import { getStarsFromRating } from '../constant/utils';
-import { imageFolder } from '../constant/consts';
-import { useState } from 'react';
-import ReviewsList from '../components/reviewList';
-import OfferList from '../components/cards/regular/offerList';
+import { useEffect, useState } from 'react';
+import ReviewsList from '../components/review-list';
+import OfferList from '../components/cards/regular/offer-list';
 import MapComponent from '../components/map';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { clearErrorAction, fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../store/api-actions';
+import { AuthStatus, PageRoutes } from '../constant/consts';
+import Header from '../components/header';
+import { getNearby, getOfferInfo, getReviews } from '../store/offer-reducers/offer-by-id/selectors';
+import { getError, getLoadingStatus } from '../store/app-reducer/selectors';
+import { getCityData } from '../store/offer-reducers/offer/selectors';
+import { getAuthStatus } from '../store/user-reducer/selectors';
 
-type OfferPageProps = {
-  offers: OfferType[];
-  reviews: ReviewType[];
-};
+export default function OfferScreen(): JSX.Element {
+  const { id } = useParams<{ id: string }>();
 
-export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.Element {
-  const params = useParams<{ id: string }>();
-  const id = Number(params.id);
+  const offerInfo = useAppSelector(getOfferInfo);
+  const nearby = useAppSelector(getNearby);
+  const reviews = useAppSelector(getReviews);
 
-  const [{ type, name, description, price, rating, isPremium, isFavorite, owner, photos,
-    amenities, maxAdults, bedrooms }] = offers.filter((offer) => offer.id === id);
-  const [activeCard, setActiveCard] = useState(0);
+  const loadingStatus = useAppSelector(getLoadingStatus);
+  const authStatus = useAppSelector(getAuthStatus);
+  const error = useAppSelector(getError);
 
-  const selectedCity = useAppSelector((state)=>state.selectedCity);
+  const [activeCardID, setActiveCardID] = useState('0');
+  const [isFavoriteOffer, setFavoriteOffer] = useState<boolean | null>(offerInfo?.isFavorite ? offerInfo.isFavorite : null);
+
+  const cityData = useAppSelector(getCityData);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (error === '404') {
+      navigate(PageRoutes.NotFound);
+      dispatch(clearErrorAction());
+    }
+  }, [error, navigate, dispatch]);
+
+  if (loadingStatus || !offerInfo || !nearby || !reviews || !cityData) {
+    // In case offer is not loaded(for example page was reloaded) dispatch another loader
+    if (!loadingStatus) {
+      if (id) {
+        dispatch(fetchOfferByIDAction({ id: id }));
+      }
+    }
+
+    return (
+      <div></div>
+    );
+  }
+
+  const handleFavoriteButtonClick = () => {
+    if(authStatus !== AuthStatus.Auth) {
+      return;
+    }
+    if (id) {
+      // I use isFavoriteOffer !== true instead of !isFavoriteOffer to account for null value, in which
+      // case this expression should evaluate to 1
+      dispatch(setOfferFavoriteStatusAction({id, favoriteStatus: isFavoriteOffer !== true}));
+    }
+    setFavoriteOffer(!isFavoriteOffer);
+  };
+
+  const { type, title, description, price, rating, isPremium, host, images,
+    goods: amenities, maxAdults, bedrooms } = offerInfo;
 
   return (
     <div className="page">
-
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link" href="main.html">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {photos.map((photo) => (
+              {images.map((image) => (
                 (
-                  <div className="offer__image-wrapper" key={imageFolder + photo}>
-                    <img className="offer__image" src={imageFolder + photo} alt="studio" />
+                  <div className="offer__image-wrapper" key={image}>
+                    <img className="offer__image" src={image} alt="studio" />
                   </div>
                 )
               ))}
@@ -83,8 +97,8 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
                 <span>{isPremium ? 'Premium' : ''}</span>
               </div>
               <div className="offer__name-wrapper">
-                <h1 className="offer__name">{name}</h1>
-                <button className={`offer__bookmark-button button ${isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button">
+                <h1 className="offer__name">{title}</h1>
+                <button className={`offer__bookmark-button button ${isFavoriteOffer ? 'offer__bookmark-button--active' : ''}`} onClick={handleFavoriteButtonClick} type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -129,14 +143,14 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src={imageFolder + owner.avatar}
+                      src={host.avatarUrl}
                       width="74"
                       height="74"
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">{owner.name}</span>
-                  <span className="offer__user-status">{owner.isPro ? 'Pro' : ''}</span>
+                  <span className="offer__user-name">{host.name}</span>
+                  <span className="offer__user-status">{host.isPro ? 'Pro' : ''}</span>
                 </div>
                 <div className="offer__description">
                   {description.split('.').map((sentence) => (
@@ -149,11 +163,14 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ReviewsList reviews={reviews} />
-                <ReviewForm />
+                {
+                  authStatus === AuthStatus.Auth &&
+                    <ReviewForm id={offerInfo.id} />
+                }
               </section>
             </div>
           </div>
-          <MapComponent isMainScreen={false} offers={offers.slice(0, 3)} activeOfferId={activeCard} selectedCity={selectedCity} />
+          <MapComponent isMainScreen={false} offers={nearby.slice(0, 3)} activeOfferId={activeCardID} selectedCity={cityData} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -161,7 +178,7 @@ export default function OfferScreen({ offers, reviews }: OfferPageProps): JSX.El
               Other places in the neighborhood
             </h2>
             <div className="near-places__list places__list">
-              <OfferList offers={offers.slice(0, 3)} setActiveCard={setActiveCard} isMainScreen={false} />
+              <OfferList offers={nearby.slice(0, 3)} setActiveCard={setActiveCardID} isMainScreen={false} />
             </div>
           </section>
         </div>

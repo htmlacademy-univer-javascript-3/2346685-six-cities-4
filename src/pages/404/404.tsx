@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../../constant/consts';
 import { useCallback, useEffect } from 'react';
 
-
-function NotFoundPage() {
+function NotFoundPage(): JSX.Element {
   const navigate = useNavigate();
   const returnToMain = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Enter') {

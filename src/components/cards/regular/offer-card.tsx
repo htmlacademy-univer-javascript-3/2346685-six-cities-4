@@ -1,21 +1,38 @@
 import { OfferType } from '../../../constant/types';
-import { imageFolder } from '../../../constant/consts';
 import { Link } from 'react-router-dom';
 import { getStarsFromRating } from '../../../constant/utils';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../../../store/api-actions';
+import { getAuthStatus } from '../../../store/user-reducer/selectors';
+import { useState } from 'react';
+import { AuthStatus } from '../../../constant/consts';
 
 export type OfferCardParams = {
   offer: OfferType;
-  onMouseOver: (id: number) => void;
+  onMouseOver: (id: string) => void;
   isMainScreen: boolean;
 }
 
 export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCardParams): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const authStatus = useAppSelector(getAuthStatus);
+  const [isFavoriteOffer, setFavoriteOffer] = useState<boolean | null>(offer.isFavorite);
+
+  const handleFavoriteButtonClick = () => {
+    if(authStatus !== AuthStatus.Auth) {
+      return;
+    }
+    dispatch(setOfferFavoriteStatusAction({id: offer.id, favoriteStatus: !isFavoriteOffer}));
+    setFavoriteOffer(!isFavoriteOffer);
+  };
+
   return (
     <article className={isMainScreen ? 'cities__card place-card' : 'near-places__card place-card'}
       id={offer.id.toString()}
       onMouseOver={(evt) => {
         const target = evt.currentTarget as HTMLElement;
-        onMouseOver(+target.id);
+        onMouseOver(target.id);
       }}
     >
       {
@@ -26,8 +43,11 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
         ) : ('')
       }
       <div className={isMainScreen ? 'near-places__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'}>
-        <Link to={`/offer/${offer.id}`} state={offer}>
-          <img className="place-card__image" src={imageFolder + offer.preview} width="260" height="200" alt="Place image" />
+        <Link to={`/offer/${offer.id}`} state={offer} onClick={() => {
+          dispatch(fetchOfferByIDAction({id :offer.id}));
+        }}
+        >
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -36,7 +56,7 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button className={`place-card__bookmark-button ${isFavoriteOffer ? 'place-card__bookmark-button--active' : ''} button`} onClick={handleFavoriteButtonClick} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -50,7 +70,7 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${offer.id}`} state={offer}>{offer.name}</Link>
+          <Link to={`/offer/${offer.id}`} state={offer}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

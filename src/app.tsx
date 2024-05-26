@@ -1,5 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { useAppSelector } from './hooks';
+import { useAppDispatch, useAppSelector } from './hooks';
 
 import { AuthStatus, PageRoutes } from './constant/consts';
 
@@ -7,12 +7,33 @@ import FavoritesPage from './pages/favorites';
 import LoginPage from './pages/login';
 import OfferPage from './pages/offer';
 import NotFoundPage from './pages/404/404';
-import PrivateRoute from './components/privateRoute';
+import PrivateRoute from './components/private-route';
 import MainPage from './pages/main';
-import reviews from './mocks/reviews';
+import LoadingPage from './pages/loading/loading';
+import { getFilteredOffers } from './store/offer-reducers/offer/selectors';
+import { getAuthStatus } from './store/user-reducer/selectors';
+import { getLoadingStatus } from './store/app-reducer/selectors';
+import { fetchFavoriteOffersAction } from './store/api-actions';
+import { useEffect } from 'react';
 
 function App(): JSX.Element {
-  const offers = useAppSelector((state)=>state.offers);
+  const dispatch = useAppDispatch();
+
+  const offers = useAppSelector(getFilteredOffers);
+  const loadingStatus = useAppSelector(getLoadingStatus);
+  const Auth = useAppSelector(getAuthStatus);
+
+  useEffect(() => {
+    if (Auth === AuthStatus.Auth) {
+      dispatch(fetchFavoriteOffersAction());
+    }
+  }, [dispatch, Auth]);
+
+  if (loadingStatus || Auth === AuthStatus.Unknown) {
+    return (
+      <LoadingPage />
+    );
+  }
 
   return (
     <BrowserRouter>
@@ -25,9 +46,9 @@ function App(): JSX.Element {
           path={PageRoutes.Favorites}
           element={
             <PrivateRoute
-              authStatus={AuthStatus.Auth}
+              authStatus={Auth}
             >
-              <FavoritesPage offers={offers}/>
+              <FavoritesPage />
             </PrivateRoute>
           }
         />
@@ -37,7 +58,7 @@ function App(): JSX.Element {
         />
         <Route
           path={PageRoutes.Offer}
-          element={<OfferPage offers={offers} reviews={reviews}/>}
+          element={<OfferPage />}
         />
         <Route
           path='*'
