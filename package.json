@@ -63,5 +63,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/TheDark1ord/2346685-six-cities-4",
+  "author": "TheDark1ord <rubcov23033@gmail.com>",
+  "license": "MIT"
 }
