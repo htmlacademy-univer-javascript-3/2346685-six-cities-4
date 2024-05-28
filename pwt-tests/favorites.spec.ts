@@ -5,6 +5,9 @@ test.describe('Favorites', () => {
     async ({ page }) => {
       await page.goto('http://localhost:5173');
 
+      //Wait to finish loading
+      await page.waitForSelector('.cities__card');
+
       // Test redirect
       await page.goto('http://localhost:5173/favorites');
       page.waitForURL('http://localhost:5173/login');
