@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import { CityString } from '../constant/consts';
 import { useAppDispatch } from '../hooks';
-import { CityType } from '../constant/types';
-import { filterOffers, setSelectedCity } from '../store/offer-reducers/offer/reducer';
+import { setSelectedCity } from '../store/offer-reducers/offer/reducer';
 
 type CitiesListProps = {
-  selectedCity: CityType | null;
+  selectedCity: string | null;
 }
 
 export default function CitiesList({ selectedCity }: CitiesListProps): JSX.Element {
@@ -18,36 +17,35 @@ export default function CitiesList({ selectedCity }: CitiesListProps): JSX.Eleme
         return;
       }
       dispatch(setSelectedCity(target.textContent));
-      dispatch(filterOffers());
     }}
     >
       <li className="locations__item">
-        <Link className={`locations__item-link tabs__item ${selectedCity?.name === CityString.PARIS ? 'tabs__item--active' : ''}`} to="#">
+        <Link className={`locations__item-link tabs__item ${selectedCity === CityString.Paris ? 'tabs__item--active' : ''}`} to="#">
           <span>Paris</span>
         </Link>
       </li>
       <li className="locations__item">
-        <Link className={`locations__item-link tabs__item ${selectedCity?.name === CityString.COLOGNE ? 'tabs__item--active' : ''}`} to="#">
+        <Link className={`locations__item-link tabs__item ${selectedCity === CityString.Cologne ? 'tabs__item--active' : ''}`} to="#">
           <span>Cologne</span>
         </Link>
       </li>
       <li className="locations__item">
-        <Link className={`locations__item-link tabs__item ${selectedCity?.name === CityString.BRUSSELS ? 'tabs__item--active' : ''}`} to="#">
+        <Link className={`locations__item-link tabs__item ${selectedCity === CityString.Brussels ? 'tabs__item--active' : ''}`} to="#">
           <span>Brussels</span>
         </Link>
       </li>
       <li className="locations__item">
-        <Link className={`locations__item-link tabs__item ${selectedCity?.name === CityString.AMSTERDAM ? 'tabs__item--active' : ''}`} to="#">
+        <Link className={`locations__item-link tabs__item ${selectedCity === CityString.Amsterdam ? 'tabs__item--active' : ''}`} to="#">
           <span>Amsterdam</span>
         </Link>
       </li>
       <li className="locations__item">
-        <Link className={`locations__item-link tabs__item ${selectedCity?.name === CityString.HAMBURG ? 'tabs__item--active' : ''}`} to="#">
+        <Link className={`locations__item-link tabs__item ${selectedCity === CityString.Hamburg ? 'tabs__item--active' : ''}`} to="#">
           <span>Hamburg</span>
         </Link>
       </li>
       <li className="locations__item">
-        <Link className={`locations__item-link tabs__item ${selectedCity?.name === CityString.DUSSELDORF ? 'tabs__item--active' : ''}`} to="#">
+        <Link className={`locations__item-link tabs__item ${selectedCity === CityString.Dusseldorf ? 'tabs__item--active' : ''}`} to="#">
           <span>Dusseldorf</span>
         </Link>
       </li>

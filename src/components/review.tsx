@@ -1,5 +1,5 @@
 import { ReviewType } from '../constant/types';
-import { getStarsFromRating } from '../constant/utils';
+import { formatDate, getStarsFromRating } from '../constant/utils';
 
 type ReviewProps = {
     review: ReviewType;
@@ -7,6 +7,8 @@ type ReviewProps = {
 
 export default function Review({review}: ReviewProps): JSX.Element {
   const {date, rating, id, user, comment} = review;
+  const formattedDate = formatDate(date);
+
   return (
     <li className="reviews__item" key={id}>
       <div className="reviews__user user">
@@ -27,7 +29,7 @@ export default function Review({review}: ReviewProps): JSX.Element {
         <p className="reviews__text">
           {comment}
         </p>
-        <time className="reviews__time" dateTime={date}>{date}</time>
+        <time className="reviews__time" dateTime={formattedDate}>{formattedDate}</time>
       </div>
     </li>
   );

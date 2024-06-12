@@ -3,7 +3,7 @@ import OfferCard from './offer-card';
 
 type OfferListProps = {
     offers: OfferType[];
-    setActiveCard: (id: string) => void;
+    setActiveCard?: (id: string) => void;
     isMainScreen: boolean;
 }
 

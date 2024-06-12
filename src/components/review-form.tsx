@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { fetchOfferByIDAction, sendOfferCommentAction } from '../store/api-actions';
+import { sendOfferCommentAction } from '../store/api-actions';
 import { useAppDispatch } from '../hooks';
 
 const MIN_COMMENT_CHARACTERS = 50;
@@ -34,12 +34,13 @@ export default function ReviewForm({ id }: { id: string }): JSX.Element {
   const submitHandler = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
     dispatch(sendOfferCommentAction({
-      id, resetFormData, commentData: {
+      id,
+      resetFormData,
+      commentData: {
         comment: formData.review,
         rating: Number(formData.rating),
       }
     }));
-    dispatch(fetchOfferByIDAction({id}));
   };
 
   return (

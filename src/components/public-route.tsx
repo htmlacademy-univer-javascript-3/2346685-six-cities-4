@@ -5,19 +5,17 @@ import LoadingPage from '../pages/loading/loading';
 type PrivateRouteProps = {
   authStatus: AuthStatus;
   children: JSX.Element;
+  navigateTo: PageRoutes;
 }
 
-function PrivateRoute({ authStatus, children }: PrivateRouteProps): JSX.Element {
-  
+export default function PublicRoute({ authStatus, children, navigateTo }: PrivateRouteProps): JSX.Element {
   if (authStatus === AuthStatus.Unknown) {
     return (<LoadingPage/>);
   }
 
   return (
-    authStatus === AuthStatus.Auth
+    authStatus === AuthStatus.NoAuth
       ? children
-      : <Navigate to={PageRoutes.Login} />
+      : <Navigate to={navigateTo} />
   );
 }
-
-export default PrivateRoute;

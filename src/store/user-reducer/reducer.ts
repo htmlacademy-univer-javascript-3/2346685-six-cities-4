@@ -3,34 +3,34 @@ import { AuthStatus, SliceNames } from '../../constant/consts';
 import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
 
 type UserState = {
-  Auth: AuthStatus;
+  auth: AuthStatus;
 }
 
 const initialState: UserState = {
-  Auth: AuthStatus.Unknown,
+  auth: AuthStatus.Unknown,
 };
 
 export const UserSlice = createSlice({
-  name: SliceNames.USER_REDUCER,
+  name: SliceNames.UserReducer,
   initialState,
   reducers: {
     setAuth: (state, action: PayloadAction<AuthStatus>) => {
-      state.Auth = action.payload;
+      state.auth = action.payload;
     },
   },
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state) => {
-        state.Auth = AuthStatus.Auth;
+        state.auth = AuthStatus.Auth;
       })
       .addCase(checkAuthAction.rejected, (state) => {
-        state.Auth = AuthStatus.NoAuth;
+        state.auth = AuthStatus.NoAuth;
       })
       .addCase(loginAction.rejected, (state) => {
-        state.Auth = AuthStatus.NoAuth;
+        state.auth = AuthStatus.NoAuth;
       })
       .addCase(logoutAction.fulfilled, (state) => {
-        state.Auth = AuthStatus.NoAuth;
+        state.auth = AuthStatus.NoAuth;
       });
   }
 });

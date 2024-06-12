@@ -6,8 +6,8 @@ import { UserSlice } from './user-reducer/reducer';
 import { SliceNames } from '../constant/consts';
 
 export const rootReducer = combineReducers({
-  [SliceNames.APP_REDUCER]: AppSlice.reducer,
-  [SliceNames.OFFER_REDUCER]: OfferSlice.reducer,
-  [SliceNames.OFFER_BY_ID_REDUCER]: OfferByIDSlice.reducer,
-  [SliceNames.USER_REDUCER]: UserSlice.reducer,
+  [SliceNames.AppReducer]: AppSlice.reducer,
+  [SliceNames.OfferReducer]: OfferSlice.reducer,
+  [SliceNames.OfferByIdReducer]: OfferByIDSlice.reducer,
+  [SliceNames.UserReducer]: UserSlice.reducer,
 });
