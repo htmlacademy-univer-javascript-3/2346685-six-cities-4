@@ -8,7 +8,7 @@ type PrivateRouteProps = {
 }
 
 function PrivateRoute({ authStatus, children }: PrivateRouteProps): JSX.Element {
-  
+
   if (authStatus === AuthStatus.Unknown) {
     return (<LoadingPage/>);
   }

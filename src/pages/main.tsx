@@ -61,7 +61,8 @@ export default function MainPage(): JSX.Element {
                 </section>
                 <div className="cities__right-section">
                   <MapComponent offers={offers} isMainScreen activeOfferId={activeCardId}
-                    selectedCity={filteredOffers[0].city} />
+                    selectedCity={filteredOffers[0].city}
+                  />
                 </div>
               </div>
             ) : (

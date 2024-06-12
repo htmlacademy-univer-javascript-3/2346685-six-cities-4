@@ -38,7 +38,11 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
           onMouseOver(target.id);
         }
       }}
-      onMouseLeave={() => { onMouseOver ? onMouseOver('') : '' }}
+      onMouseLeave={() => {
+        if (onMouseOver) {
+          onMouseOver('');
+        }
+      }}
     >
       {
         (offer.isPremium && isMainScreen) ? (

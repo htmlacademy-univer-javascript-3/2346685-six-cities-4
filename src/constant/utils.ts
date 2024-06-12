@@ -17,7 +17,7 @@ export function checkPassword(password: string) {
   return hasLetter && hasNumber && password.length >= 3;
 }
 
-export function formatDate(date_string: string) {
-  const date = new Date(date_string);
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
   return date.toLocaleDateString('default', {month: 'long', year: 'numeric'});
 }

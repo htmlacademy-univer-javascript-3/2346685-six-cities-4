@@ -105,18 +105,17 @@ export const sendOfferCommentAction = createAsyncThunk<ReviewType, {
   id: string;
   commentData: CommentData;
   resetFormData: () => void;
-}, {
+    }, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'sendOfferComment',
-  async ({ id, resetFormData, commentData }, { extra: api }) => {
-    const { data } = await api.post<ReviewType>(APIRoutes.Reviews + id, commentData);
-    resetFormData();
-    return data;
-  }
-);
+    'sendOfferComment',
+    async ({ id, resetFormData, commentData }, { extra: api }) => {
+      const { data } = await api.post<ReviewType>(APIRoutes.Reviews + id, commentData);
+      resetFormData();
+      return data;
+    });
 
 export const clearErrorAction = createAsyncThunk(
   'clearError',
