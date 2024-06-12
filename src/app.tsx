@@ -1,60 +1,51 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './hooks';
-
 import { AuthStatus, PageRoutes } from './constant/consts';
-
 import FavoritesPage from './pages/favorites';
 import LoginPage from './pages/login';
 import OfferPage from './pages/offer';
 import NotFoundPage from './pages/404/404';
 import PrivateRoute from './components/private-route';
 import MainPage from './pages/main';
-import LoadingPage from './pages/loading/loading';
-import { getFilteredOffers } from './store/offer-reducers/offer/selectors';
 import { getAuthStatus } from './store/user-reducer/selectors';
-import { getLoadingStatus } from './store/app-reducer/selectors';
 import { fetchFavoriteOffersAction } from './store/api-actions';
 import { useEffect } from 'react';
+import PublicRoute from './components/public-route';
+import HistoryRouter from './components/history-router';
+import browserHistory from './services/browser-history';
 
-function App(): JSX.Element {
+export default function App(): JSX.Element {
   const dispatch = useAppDispatch();
-
-  const offers = useAppSelector(getFilteredOffers);
-  const loadingStatus = useAppSelector(getLoadingStatus);
-  const Auth = useAppSelector(getAuthStatus);
+  const auth = useAppSelector(getAuthStatus);
 
   useEffect(() => {
-    if (Auth === AuthStatus.Auth) {
+    if (auth === AuthStatus.Auth) {
       dispatch(fetchFavoriteOffersAction());
     }
-  }, [dispatch, Auth]);
-
-  if (loadingStatus || Auth === AuthStatus.Unknown) {
-    return (
-      <LoadingPage />
-    );
-  }
+  }, [dispatch, auth]);
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={PageRoutes.Main}
-          element={<MainPage offers={offers} />}
+          element={<MainPage />}
         />
         <Route
           path={PageRoutes.Favorites}
           element={
-            <PrivateRoute
-              authStatus={Auth}
-            >
+            <PrivateRoute authStatus={auth}>
               <FavoritesPage />
             </PrivateRoute>
           }
         />
         <Route
           path={PageRoutes.Login}
-          element={<LoginPage />}
+          element={
+            <PublicRoute authStatus={auth} navigateTo={PageRoutes.Favorites}>
+              <LoginPage />
+            </PublicRoute>
+          }
         />
         <Route
           path={PageRoutes.Offer}
@@ -65,8 +56,6 @@ function App(): JSX.Element {
           element={<NotFoundPage />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
-
-export default App;

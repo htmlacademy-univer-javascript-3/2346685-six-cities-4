@@ -1,6 +1,6 @@
 export const SERVER_BASE_URL = 'https://14.design.htmlacademy.pro/six-cities';
 export const SERVER_API_CALL_TIMEOUT = 5000;
-export const ERROR_TIMEOUT = 5000;
+export const ERROR_TIMEOUT = 2500;
 
 export enum PageRoutes {
     Main = '/',
@@ -25,23 +25,23 @@ export enum AuthStatus {
 }
 
 export enum CityString {
-    AMSTERDAM = 'Amsterdam',
-    COLOGNE = 'Cologne',
-    PARIS = 'Paris',
-    DUSSELDORF = 'Dusseldorf',
-    BRUSSELS = 'Brussels',
-    HAMBURG = 'Hamburg',
+    Amsterdam = 'Amsterdam',
+    Cologne = 'Cologne',
+    Paris = 'Paris',
+    Dusseldorf = 'Dusseldorf',
+    Brussels = 'Brussels',
+    Hamburg = 'Hamburg',
 }
 
 export enum Actions {
-    FILTER_CITIES = 'FILTER_CITIES',
-    FILTER_OFFERS = 'FILTER_OFFERS',
-    LOAD_OFFERS = 'LOAD_OFFERS',
-    SET_LOADING_STATUS = 'SET_LOADING_STATUS',
-    LOAD_OFFER_BY_ID = 'LOAD_OFFER_BY_ID',
-    SET_AUTH = 'SET_AUTH',
-    REDIRECT_ROUTE = 'REDIRECT_ROUTE',
-    LOAD_FAVORITES = 'LOAD_FAVORITES',
+    FilterCities = 'FILTER_CITIES',
+    FilterOffers = 'FILTER_OFFERS',
+    LoadOffers = 'LOAD_OFFERS',
+    SetLoadingStatus = 'SET_LOADING_STATUS',
+    LoadOfeerByID = 'LOAD_OFFER_BY_ID',
+    SetAuth = 'SET_AUTH',
+    RedirectRoute = 'REDIRECT_ROUTE',
+    LoadFavorites = 'LOAD_FAVORITES',
 }
 
 export enum SortBy {
@@ -52,16 +52,14 @@ export enum SortBy {
 }
 
 export enum SliceNames {
-    APP_REDUCER = 'app-reducer',
-    OFFER_REDUCER = 'offer-reducer',
-    OFFER_BY_ID_REDUCER = 'offer-by-id-reducer',
-    USER_REDUCER = 'user-reducer',
+    AppReducer = 'app-reducer',
+    OfferReducer = 'offer-reducer',
+    OfferByIdReducer = 'offer-by-id-reducer',
+    UserReducer = 'user-reducer',
 }
 
 export const URL_MARKER_DEFAULT =
-    'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
+    './img/pin.svg';
 
 export const URL_MARKER_CURRENT =
-    'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
-
-export const imageFolder: string = '/markup/img/';
+    './img/pin-active.svg';

@@ -39,7 +39,7 @@ export type OfferType = {
 
 export type SelectedOfferType = {
     offerInfo: OfferType | null;
-    nearby: OfferType[];
+    rNearby: OfferType[];
     reviews: ReviewType[];
 }
 

@@ -1,0 +1,22 @@
+.error-message {
+  position: sticky;
+  display: inline-block;
+  z-index: 10;
+
+  top: 30px;
+  left: 30px;
+  padding: 15px;
+
+  width: max-content;
+  height: max-content;
+  margin-left: auto;
+  overflow: hidden;
+
+  background-color: #d96666;
+  color: white;
+  opacity: 0.85;
+
+  border-radius: 5px;
+
+  font-size: large;
+}

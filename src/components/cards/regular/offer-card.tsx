@@ -1,15 +1,15 @@
 import { OfferType } from '../../../constant/types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getStarsFromRating } from '../../../constant/utils';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../../../store/api-actions';
+import { setOfferFavoriteStatusAction } from '../../../store/api-actions';
 import { getAuthStatus } from '../../../store/user-reducer/selectors';
 import { useState } from 'react';
-import { AuthStatus } from '../../../constant/consts';
+import { AuthStatus, PageRoutes } from '../../../constant/consts';
 
 export type OfferCardParams = {
   offer: OfferType;
-  onMouseOver: (id: string) => void;
+  onMouseOver?: (id: string) => void;
   isMainScreen: boolean;
 }
 
@@ -19,12 +19,14 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
   const authStatus = useAppSelector(getAuthStatus);
   const [isFavoriteOffer, setFavoriteOffer] = useState<boolean | null>(offer.isFavorite);
 
+  const navigate = useNavigate();
   const handleFavoriteButtonClick = () => {
-    if(authStatus !== AuthStatus.Auth) {
-      return;
+    if (authStatus !== AuthStatus.Auth) {
+      navigate(PageRoutes.Login);
+    } else {
+      dispatch(setOfferFavoriteStatusAction({ id: offer.id, favoriteStatus: !isFavoriteOffer }));
+      setFavoriteOffer(!isFavoriteOffer);
     }
-    dispatch(setOfferFavoriteStatusAction({id: offer.id, favoriteStatus: !isFavoriteOffer}));
-    setFavoriteOffer(!isFavoriteOffer);
   };
 
   return (
@@ -32,7 +34,14 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
       id={offer.id.toString()}
       onMouseOver={(evt) => {
         const target = evt.currentTarget as HTMLElement;
-        onMouseOver(target.id);
+        if (onMouseOver) {
+          onMouseOver(target.id);
+        }
+      }}
+      onMouseLeave={() => {
+        if (onMouseOver) {
+          onMouseOver('');
+        }
       }}
     >
       {
@@ -43,10 +52,7 @@ export default function OfferCard({ offer, onMouseOver, isMainScreen }: OfferCar
         ) : ('')
       }
       <div className={isMainScreen ? 'near-places__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'}>
-        <Link to={`/offer/${offer.id}`} state={offer} onClick={() => {
-          dispatch(fetchOfferByIDAction({id :offer.id}));
-        }}
-        >
+        <Link to={`/offer/${offer.id}`} state={offer}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>

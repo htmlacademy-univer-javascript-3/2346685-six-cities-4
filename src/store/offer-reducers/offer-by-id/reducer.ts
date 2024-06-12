@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { SelectedOfferType } from '../../../constant/types';
+import { ReviewType, SelectedOfferType } from '../../../constant/types';
 import { SliceNames } from '../../../constant/consts';
-import { fetchOfferByIDAction } from '../../api-actions';
+import { fetchOfferByIDAction, sendOfferCommentAction } from '../../api-actions';
 
 type OfferByIDState = {
   selectedOffer: SelectedOfferType;
@@ -10,13 +10,13 @@ type OfferByIDState = {
 const initialState: OfferByIDState = {
   selectedOffer: {
     offerInfo: null,
-    nearby: [],
+    rNearby: [],
     reviews: []
   },
 };
 
 export const OfferByIDSlice = createSlice({
-  name: SliceNames.OFFER_BY_ID_REDUCER,
+  name: SliceNames.OfferByIdReducer,
   initialState,
   reducers: {
   },
@@ -24,6 +24,9 @@ export const OfferByIDSlice = createSlice({
     builder
       .addCase(fetchOfferByIDAction.fulfilled, (state, action: PayloadAction<SelectedOfferType>) => {
         state.selectedOffer = action.payload;
+      })
+      .addCase(sendOfferCommentAction.fulfilled, (state, action: PayloadAction<ReviewType>) => {
+        state.selectedOffer.reviews = [...state.selectedOffer.reviews, action.payload];
       });
   }
 });

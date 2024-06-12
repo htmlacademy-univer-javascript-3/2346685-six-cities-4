@@ -6,13 +6,13 @@ import ReviewsList from '../components/review-list';
 import OfferList from '../components/cards/regular/offer-list';
 import MapComponent from '../components/map';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { clearErrorAction, fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../store/api-actions';
+import { fetchOfferByIDAction, setOfferFavoriteStatusAction } from '../store/api-actions';
 import { AuthStatus, PageRoutes } from '../constant/consts';
 import Header from '../components/header';
 import { getNearby, getOfferInfo, getReviews } from '../store/offer-reducers/offer-by-id/selectors';
-import { getError, getLoadingStatus } from '../store/app-reducer/selectors';
-import { getCityData } from '../store/offer-reducers/offer/selectors';
+import { getErrorCode, getLoadingStatus } from '../store/app-reducer/selectors';
 import { getAuthStatus } from '../store/user-reducer/selectors';
+import LoadingPage from './loading/loading';
 
 export default function OfferScreen(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -23,43 +23,38 @@ export default function OfferScreen(): JSX.Element {
 
   const loadingStatus = useAppSelector(getLoadingStatus);
   const authStatus = useAppSelector(getAuthStatus);
-  const error = useAppSelector(getError);
+  const errorCode = useAppSelector(getErrorCode);
 
-  const [activeCardID, setActiveCardID] = useState('0');
   const [isFavoriteOffer, setFavoriteOffer] = useState<boolean | null>(offerInfo?.isFavorite ? offerInfo.isFavorite : null);
 
-  const cityData = useAppSelector(getCityData);
+  const cityData = offerInfo?.city;
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (error === '404') {
+    if (errorCode === 404) {
       navigate(PageRoutes.NotFound);
-      dispatch(clearErrorAction());
     }
-  }, [error, navigate, dispatch]);
+  }, [errorCode, navigate, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchOfferByIDAction({ id: id ?? '' }));
+  }, [id, dispatch]);
 
   if (loadingStatus || !offerInfo || !nearby || !reviews || !cityData) {
-    // In case offer is not loaded(for example page was reloaded) dispatch another loader
-    if (!loadingStatus) {
-      if (id) {
-        dispatch(fetchOfferByIDAction({ id: id }));
-      }
-    }
-
     return (
-      <div></div>
+      <LoadingPage />
     );
   }
 
   const handleFavoriteButtonClick = () => {
-    if(authStatus !== AuthStatus.Auth) {
-      return;
+    if (authStatus !== AuthStatus.Auth) {
+      navigate(PageRoutes.Login);
     }
     if (id) {
       // I use isFavoriteOffer !== true instead of !isFavoriteOffer to account for null value, in which
       // case this expression should evaluate to 1
-      dispatch(setOfferFavoriteStatusAction({id, favoriteStatus: isFavoriteOffer !== true}));
+      dispatch(setOfferFavoriteStatusAction({ id, favoriteStatus: isFavoriteOffer !== true }));
     }
     setFavoriteOffer(!isFavoriteOffer);
   };
@@ -82,20 +77,17 @@ export default function OfferScreen(): JSX.Element {
                   </div>
                 )
               ))}
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
             </div>
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <div className="offer__mark">
-                <span>{isPremium ? 'Premium' : ''}</span>
-              </div>
+              {
+                isPremium ? (
+                  <div className="offer__mark">
+                    <span>Premium</span>
+                  </div>
+                ) : ('')
+              }
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{title}</h1>
                 <button className={`offer__bookmark-button button ${isFavoriteOffer ? 'offer__bookmark-button--active' : ''}`} onClick={handleFavoriteButtonClick} type="button">
@@ -117,10 +109,10 @@ export default function OfferScreen(): JSX.Element {
                   {type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {`${bedrooms} Bedrooms`}
+                  {`${bedrooms} Bedroom${bedrooms !== 1 ? 's' : ''}`}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {`Max ${maxAdults} adults`}
+                  {`Max ${maxAdults} adult${maxAdults !== 1 ? 's' : ''}`}
                 </li>
               </ul>
               <div className="offer__price">
@@ -165,12 +157,12 @@ export default function OfferScreen(): JSX.Element {
                 <ReviewsList reviews={reviews} />
                 {
                   authStatus === AuthStatus.Auth &&
-                    <ReviewForm id={offerInfo.id} />
+                  <ReviewForm id={offerInfo.id} />
                 }
               </section>
             </div>
           </div>
-          <MapComponent isMainScreen={false} offers={nearby.slice(0, 3)} activeOfferId={activeCardID} selectedCity={cityData} />
+          <MapComponent isMainScreen={false} offers={[...nearby.slice(0, 3), offerInfo]} activeOfferId={id ? id : ''} selectedCity={cityData} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -178,7 +170,7 @@ export default function OfferScreen(): JSX.Element {
               Other places in the neighborhood
             </h2>
             <div className="near-places__list places__list">
-              <OfferList offers={nearby.slice(0, 3)} setActiveCard={setActiveCardID} isMainScreen={false} />
+              <OfferList offers={nearby.slice(0, 3)} isMainScreen={false} />
             </div>
           </section>
         </div>

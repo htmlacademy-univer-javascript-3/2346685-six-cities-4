@@ -3,16 +3,35 @@ import Header from '../components/header';
 import { OfferType } from '../constant/types';
 import { uniqueBy } from '../constant/utils';
 import { useAppSelector } from '../hooks';
+import { getLoadingStatus } from '../store/app-reducer/selectors';
 import { getFavoriteOffers } from '../store/offer-reducers/offer/selectors';
+import LoadingPage from './loading/loading';
 
 function FavoritesPage(): JSX.Element {
   const favorites = useAppSelector(getFavoriteOffers);
 
+  const loadingStatus = useAppSelector(getLoadingStatus);
+  if (loadingStatus) {
+    return (<LoadingPage/>);
+  }
+
   return (
-    <div className="page">
+    <div className={`page ${favorites.length === 0 ? 'page--favorites-empty' : ''}`}>
       <Header />
       {
-        favorites.length === 0 ? '' :
+        favorites.length === 0 ? (
+          <main className="page__main page__main--favorites page__main--favorites-empty">
+            <div className="page__favorites-container container">
+              <section className="favorites favorites--empty">
+                <h1 className="visually-hidden">Favorites (empty)</h1>
+                <div className="favorites__status-wrapper">
+                  <b className="favorites__status">Nothing yet saved.</b>
+                  <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+                </div>
+              </section>
+            </div>
+          </main>
+        ) : (
           <main className="page__main page__main--favorites">
             <div className="page__favorites-container container">
               <section className="favorites">
@@ -36,20 +55,7 @@ function FavoritesPage(): JSX.Element {
               </section>
             </div>
           </main >
-      }
-      {
-        favorites.length > 0 ? '' :
-          <main className="page__main page__main--favorites page__main--favorites-empty">
-            <div className="page__favorites-container container">
-              <section className="favorites favorites--empty">
-                <h1 className="visually-hidden">Favorites (empty)</h1>
-                <div className="favorites__status-wrapper">
-                  <b className="favorites__status">Nothing yet saved.</b>
-                  <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
-                </div>
-              </section>
-            </div>
-          </main>
+        )
       }
       <footer className="footer container">
         <a className="footer__logo-link" href="main.html">

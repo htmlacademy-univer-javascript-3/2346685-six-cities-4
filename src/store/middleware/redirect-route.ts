@@ -12,7 +12,7 @@ export const redirectRouteMiddleware: Middleware<unknown, Reducer> =
   () =>
     (next) =>
       (action: PayloadAction<string>) => {
-        if (action.type === Actions.REDIRECT_ROUTE as string) {
+        if (action.type === Actions.RedirectRoute as string) {
           browserHistory.push(action.payload);
           window.location.href = action.payload;
         }

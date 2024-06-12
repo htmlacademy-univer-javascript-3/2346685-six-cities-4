@@ -7,7 +7,7 @@ import { getFavoriteOffers } from '../store/offer-reducers/offer/selectors';
 import { getUserEmail } from '../services/user-email';
 
 export default function Header(): JSX.Element {
-  const Auth = useAppSelector(getAuthStatus);
+  const auth = useAppSelector(getAuthStatus);
   const favoriteOffers = useAppSelector(getFavoriteOffers);
   const dispatch = useAppDispatch();
   const userEmail = getUserEmail();
@@ -23,7 +23,7 @@ export default function Header(): JSX.Element {
           </div>
           <nav className="header__nav">
             {
-              Auth === AuthStatus.Auth &&
+              auth === AuthStatus.Auth &&
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
                   <Link className="header__nav-link header__nav-link--profile" to="/favorites">
@@ -44,7 +44,7 @@ export default function Header(): JSX.Element {
               </ul>
             }
             {
-              Auth !== AuthStatus.Auth &&
+              auth !== AuthStatus.Auth &&
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
                   <Link className="header__nav-link header__nav-link--profile" to="/login">

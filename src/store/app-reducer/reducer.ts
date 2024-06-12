@@ -5,19 +5,24 @@ import { clearErrorAction, fetchOfferByIDAction, fetchOffersAction } from '../ap
 type AppState = {
   loadingStatus: boolean;
   error: string | null;
+  errorCode: number | null;
 }
 
 const initialState: AppState = {
   loadingStatus: false,
   error: null,
+  errorCode: null
 };
 
 export const AppReducer = createSlice({
-  name: SliceNames.APP_REDUCER,
+  name: SliceNames.AppReducer,
   initialState,
   reducers: {
-    setError: (state, action: PayloadAction<string>) => {
+    setError: (state, action: PayloadAction<AppState['error']>) => {
       state.error = action.payload;
+    },
+    setErrorCode: (state, action: PayloadAction<AppState['errorCode']>) => {
+      state.errorCode = action.payload;
     },
     setLoadingStatus: (state, action: PayloadAction<boolean>) => {
       state.loadingStatus = action.payload;
@@ -45,8 +50,9 @@ export const AppReducer = createSlice({
       })
       .addCase(clearErrorAction.fulfilled, (state) => {
         state.error = null;
+        state.errorCode = null;
       });
   }
 });
 
-export const { setError, setLoadingStatus } = AppReducer.actions;
+export const { setError, setErrorCode, setLoadingStatus } = AppReducer.actions;

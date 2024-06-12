@@ -1,5 +1,5 @@
 export function getStarsFromRating(rating: number): string {
-  return `${20 * rating}%`;
+  return `${20 * Math.floor(rating)}%`;
 }
 
 export function uniqueBy<T, U>(a: Array<T>, key: (arg0: T) => U): Array<T> {
@@ -15,4 +15,9 @@ export function checkPassword(password: string) {
   const hasNumber = /\d/.test(password);
 
   return hasLetter && hasNumber && password.length >= 3;
+}
+
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('default', {month: 'long', year: 'numeric'});
 }
